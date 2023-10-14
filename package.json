@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@vercel/kv": "^0.2.3",
     "axios": "^1.5.1",
     "canvas": "^2.11.2",
     "mana-font": "^1.15.9",

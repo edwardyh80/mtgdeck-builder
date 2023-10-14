@@ -1,3 +1,4 @@
+import { kv } from "@vercel/kv";
 import {
   type Canvas,
   type CanvasRenderingContext2D,
@@ -8,6 +9,7 @@ import {
 } from "canvas";
 import { readFileSync } from "fs";
 import path from "path";
+import { v4 } from "uuid";
 
 import type { Config, IAScryfallCard } from "@/types";
 
@@ -368,15 +370,19 @@ const drawFooter = (
 };
 
 export const POST = async (req: Request) => {
-  const {
-    cards,
-    labelLang,
-    deckName,
-    author,
-    format,
-    customFormat,
-    selectedCardId,
-  }: { cards: IAScryfallCard[] } & Config = await req.json();
+  const { cards, ...config }: { cards: IAScryfallCard[] } & Config =
+    await req.json();
+  const { labelLang, deckName, author, format, customFormat, selectedCardId } =
+    config;
+  await kv.hset(v4(), {
+    timestamp: new Date().getTime(),
+    cards: cards.map((card) => ({
+      id: card.id,
+      extra: card.extra,
+    })),
+    config,
+  });
+
   const deckCards = cards
     .filter((card) => !card.extra.isSideboard)
     .sort(sortCards(false));
