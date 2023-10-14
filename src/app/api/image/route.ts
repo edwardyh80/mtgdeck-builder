@@ -6,7 +6,7 @@ import {
   loadImage,
   registerFont,
 } from "canvas";
-import { promises as fs } from "fs";
+import { readFileSync } from "fs";
 import path from "path";
 
 import type { Config, IAScryfallCard } from "@/types";
@@ -262,6 +262,14 @@ const drawFooter = (
   coverCardImg: Image | undefined,
 ) => {
   ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(canvas.width, canvas.height);
+  ctx.lineTo(canvas.width, canvas.height - footerHeight);
+  ctx.lineTo(530, canvas.height - footerHeight);
+  ctx.lineTo(coverCardWidth, canvas.height);
+  ctx.moveTo(canvas.width, canvas.height);
+  ctx.closePath();
+  ctx.clip();
   ctx.fillStyle = "#00000080";
   ctx.fillRect(0, canvas.height - footerHeight, canvas.width, footerHeight);
   ctx.restore();
@@ -269,10 +277,7 @@ const drawFooter = (
   ctx.save();
   ctx.beginPath();
   ctx.moveTo(0, canvas.height - footerHeight - 0.5 * padding[1]);
-  ctx.lineTo(
-    coverCardWidth - padding[0],
-    canvas.height - footerHeight - 0.5 * padding[1],
-  );
+  ctx.lineTo(524, canvas.height - footerHeight - 0.5 * padding[1]);
   ctx.lineTo(coverCardWidth, canvas.height);
   ctx.lineTo(0, canvas.height);
   ctx.lineTo(0, canvas.height - footerHeight);
@@ -282,7 +287,7 @@ const drawFooter = (
     ctx.drawImage(
       coverCardImg,
       0,
-      canvas.height - 1.5 * footerHeight,
+      canvas.height - 1.25 * footerHeight,
       coverCardImg.width,
       coverCardImg.height,
     );
@@ -407,8 +412,8 @@ export const POST = async (req: Request) => {
   );
   const icons = await Promise.all(
     [
-      await fs.readFile(process.cwd() + "/src/assets/MTGA_Commander.png"),
-      await fs.readFile(process.cwd() + "/src/assets/MTGA_Companion.png"),
+      readFileSync(process.cwd() + "/src/assets/MTGA_Commander.png"),
+      readFileSync(process.cwd() + "/src/assets/MTGA_Companion.png"),
     ].map((path) => loadImage(path)),
   );
 
