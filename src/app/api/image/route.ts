@@ -6,6 +6,7 @@ import {
   loadImage,
   registerFont,
 } from "canvas";
+import { promises as fs } from "fs";
 import path from "path";
 
 import type { Config, IAScryfallCard } from "@/types";
@@ -406,8 +407,8 @@ export const POST = async (req: Request) => {
   );
   const icons = await Promise.all(
     [
-      path.resolve("src/assets/MTGA_Commander.png"),
-      path.resolve("src/assets/MTGA_Companion.png"),
+      await fs.readFile(process.cwd() + "/src/assets/MTGA_Commander.png"),
+      await fs.readFile(process.cwd() + "/src/assets/MTGA_Companion.png"),
     ].map((path) => loadImage(path)),
   );
 
