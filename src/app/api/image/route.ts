@@ -405,9 +405,10 @@ export const POST = async (req: Request) => {
       ),
   );
   const icons = await Promise.all(
-    ["src/assets/MTGA_Commander.png", "src/assets/MTGA_Companion.png"].map(
-      (path) => loadImage(path),
-    ),
+    [
+      path.resolve("src/assets/MTGA_Commander.png"),
+      path.resolve("src/assets/MTGA_Companion.png"),
+    ].map((path) => loadImage(path)),
   );
 
   const coverCard = cards.find((card) => card.id === selectedCardId);
