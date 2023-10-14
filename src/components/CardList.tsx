@@ -18,9 +18,16 @@ type Props = {
   updateConfig: (key: keyof Config, value: string) => void;
   enCards: IAScryfallCard[];
   jaCards: IAScryfallCard[];
+  isLoadingImage: boolean;
 };
 
-const CardList = ({ config, updateConfig, enCards, jaCards }: Props) => {
+const CardList = ({
+  config,
+  updateConfig,
+  enCards,
+  jaCards,
+  isLoadingImage,
+}: Props) => {
   const cards = config.cardLang === "en" ? enCards : jaCards;
   const classifiedCards = [
     {
@@ -66,10 +73,12 @@ const CardList = ({ config, updateConfig, enCards, jaCards }: Props) => {
                   <li
                     key={card.extra.uuid}
                     className={twMerge(
-                      "flex cursor-pointer flex-row justify-between rounded-md px-1",
+                      "flex flex-row justify-between rounded-md px-1",
+                      isLoadingImage ? "cursor-not-allowed" : "cursor-pointer",
                       config.selectedCardId === card.id && "bg-indigo-100",
                     )}
                     onClick={() =>
+                      !isLoadingImage &&
                       updateConfig(
                         "selectedCardId",
                         config.selectedCardId === card.id ? "" : card.id,

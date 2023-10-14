@@ -72,6 +72,7 @@ const Home = () => {
                         updateConfig={updateConfig}
                         enCards={enCards}
                         jaCards={jaCards}
+                        isLoadingImage={isLoadingImage}
                       />
                       <Button
                         secondary
@@ -91,6 +92,7 @@ const Home = () => {
                         textAreaInput={textAreaInput}
                         setTextAreaInput={setTextAreaInput}
                         disabled={isValidating}
+                        isValidating={isValidating}
                       />
                       <Button onClick={() => mutate()} disabled={isValidating}>
                         {isValidating ? (
